@@ -1,0 +1,30 @@
+name: build
+on: [ pull_request, push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v5
+      - name: setup jdk
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: "microsoft"
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
+      - name: capture build artifacts - fabric
+        uses: actions/upload-artifact@v7
+        with:
+          name: Artifacts - Fabric
+          path: fabric/build/libs/
+      - name: capture build artifacts - forge
+        uses: actions/upload-artifact@v7
+        with:
+          name: Artifacts - Forge
+          path: forge/build/libs/

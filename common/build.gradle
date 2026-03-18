@@ -1,0 +1,9 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    modImplementation "com.simibubi.create:create-fabric:${project.fabric_create_version}"
+    modImplementation "maven.modrinth:ae2:${project.fabric_ae2_version}"
+}

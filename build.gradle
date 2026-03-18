@@ -1,0 +1,75 @@
+plugins {
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
+}
+
+architectury {
+    minecraft = rootProject.minecraft_version
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "dev.architectury.loom"
+
+    version = "${project.mod_version}-${project.name}-${project.version_id}"
+    group = project.maven_group
+
+    base {
+        archivesName = project.mod_id
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
+        mappings loom.layered {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${project.parchment_mappings}@zip")
+        }
+    }
+
+    processResources {
+        def props = [
+                mod_id                              : project.mod_id,
+                mod_version                         : project.version,
+                mod_name                            : project.mod_name,
+                mod_description                     : project.mod_description,
+                mod_license                         : project.mod_license,
+                mod_author                          : project.mod_author,
+                mod_source                          : project.mod_source,
+                maven_group                         : project.maven_group,
+                supported_minecraft_version_fabric  : project.supported_minecraft_version_fabric,
+                supported_minecraft_version_forge   : project.supported_minecraft_version_forge
+        ]
+        inputs.properties props
+
+        filesMatching(["pack.mcmeta", "fabric.mod.json", "META-INF/*mods.toml"]) {
+            expand props
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
+
+    java {
+        withSourcesJar()
+    }
+}
+
+allprojects {
+    apply plugin: "architectury-plugin"
+
+    repositories {
+        maven { url = "https://maven.shedaniel.me" }
+        maven { url = "https://maven.architectury.dev" }
+        maven { url = "https://maven.neoforged.net/releases" }
+        maven { url = "https://maven.parchmentmc.org" }
+        maven { url = "https://maven.terraformersmc.com" }
+        maven { url = "https://mvn.devos.one/snapshots" }
+        maven { url = "https://mvn.devos.one/releases" }
+        maven { url = "https://maven.createmod.net" }
+        maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
+        maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
+        maven { url = "https://api.modrinth.com/maven" }
+    }
+}
