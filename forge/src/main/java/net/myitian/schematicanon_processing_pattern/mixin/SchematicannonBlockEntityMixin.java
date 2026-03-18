@@ -13,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_INPUT;
-import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_OUTPUT;
+import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.*;
 
 @Mixin(value = SchematicannonBlockEntity.class, remap = false)
 abstract class SchematicannonBlockEntityMixin {
@@ -35,7 +34,7 @@ abstract class SchematicannonBlockEntityMixin {
         Item itemIn = inventory.getStackInSlot(BOOK_INPUT).getItem();
         ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
         if (SchematicanonProcessingPattern.isPatternLike(itemIn)) {
-            return itemOut.getCount() < itemOut.getMaxStackSize();
+            return itemOut.getCount() >= itemOut.getMaxStackSize();
         }
         if (itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem()) {
             return true;

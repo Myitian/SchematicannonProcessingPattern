@@ -36,7 +36,7 @@ abstract class SchematicannonBlockEntityMixin {
         Item itemIn = inventory.getStackInSlot(BOOK_INPUT).getItem();
         ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
         if (SchematicanonProcessingPattern.isPatternLike(itemIn)) {
-            return itemOut.getCount() < itemOut.getMaxStackSize();
+            return itemOut.getCount() >= itemOut.getMaxStackSize();
         }
         if (itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem()) {
             return true;
