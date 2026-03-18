@@ -12,6 +12,6 @@ public final class PlatformUtilImpl {
     }
 
     public static ItemStack getBlueprint(SchematicannonBlockEntity schematicannon) {
-        return schematicannon.inventory.getStackInSlot(0);
+        return schematicannon.inventory.getStackInSlot(0); // porting-lib transfer
     }
 }

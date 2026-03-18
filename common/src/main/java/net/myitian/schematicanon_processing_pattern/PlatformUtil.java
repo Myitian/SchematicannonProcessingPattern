@@ -11,6 +11,7 @@ public final class PlatformUtil {
     public static Path getConfigDirectory() {
         throw new AssertionError();
     }
+
     @ExpectPlatform
     public static ItemStack getBlueprint(SchematicannonBlockEntity schematicannon) {
         throw new AssertionError();

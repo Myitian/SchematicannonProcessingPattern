@@ -1,7 +1,6 @@
 package net.myitian.schematicanon_processing_pattern.mixin;
 
 import appeng.core.definitions.AEItems;
-import appeng.crafting.pattern.EncodedPatternItem;
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import net.minecraft.world.item.Item;
@@ -9,18 +8,16 @@ import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_INPUT;
+import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_OUTPUT;
+
 @Mixin(value = SchematicannonBlockEntity.class, remap = false)
 abstract class SchematicannonBlockEntityMixin {
-    @Unique
-    private final int _$BookInput = 2;
-    @Unique
-    private final int _$BookOutput = 3;
     @Shadow
     public SchematicannonInventory inventory;
     @Shadow
@@ -35,11 +32,12 @@ abstract class SchematicannonBlockEntityMixin {
         name = "outputFull",
         remap = false)
     private boolean tickPaperPrinter_customCheck(boolean value) {
-        Item itemIn = inventory.getStackInSlot(_$BookInput).getItem();
-        boolean isPatternIn = itemIn == AEItems.BLANK_PATTERN.asItem() || itemIn instanceof EncodedPatternItem;
-        ItemStack itemOut = inventory.getStackInSlot(_$BookOutput);
-        boolean notPatternOut = !itemOut.isEmpty() && itemOut.getItem() != AEItems.PROCESSING_PATTERN.asItem();
-        if (isPatternIn && notPatternOut) {
+        Item itemIn = inventory.getStackInSlot(BOOK_INPUT).getItem();
+        ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
+        if (SchematicanonProcessingPattern.isPatternLike(itemIn)) {
+            return itemOut.getCount() < itemOut.getMaxStackSize();
+        }
+        if (itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem()) {
             return true;
         }
         return value;
@@ -55,13 +53,12 @@ abstract class SchematicannonBlockEntityMixin {
         cancellable = true,
         remap = false)
     private void tickPaperPrinter_customItem(CallbackInfo ci) {
-        ItemStack extractItem = inventory.extractItem(_$BookInput, 1, true);
-        Item item = extractItem.getItem();
-        if (item == AEItems.BLANK_PATTERN.asItem() || item instanceof EncodedPatternItem) {
-            inventory.extractItem(_$BookInput, 1, false);
+        ItemStack extractItem = inventory.extractItem(BOOK_INPUT, 1, true);
+        if (SchematicanonProcessingPattern.isPatternLike(extractItem.getItem())) {
+            inventory.extractItem(BOOK_INPUT, 1, false);
             ItemStack stack = SchematicanonProcessingPattern.getProcessingPattern((SchematicannonBlockEntity) (Object) this);
-            stack.setCount(inventory.getStackInSlot(_$BookOutput).getCount() + 1);
-            inventory.setStackInSlot(_$BookOutput, stack);
+            stack.setCount(inventory.getStackInSlot(BOOK_OUTPUT).getCount() + 1);
+            inventory.setStackInSlot(BOOK_OUTPUT, stack);
             sendUpdate = true;
             ci.cancel();
         }

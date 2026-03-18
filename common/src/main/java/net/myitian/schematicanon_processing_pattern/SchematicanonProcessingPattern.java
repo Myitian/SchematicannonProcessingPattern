@@ -3,6 +3,8 @@ package net.myitian.schematicanon_processing_pattern;
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;
+import appeng.core.definitions.AEItems;
+import appeng.crafting.pattern.EncodedPatternItem;
 import com.google.common.collect.Sets;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.cannon.MaterialChecklist;
@@ -24,11 +26,16 @@ public final class SchematicanonProcessingPattern {
     public static final String MOD_ID = "schematicanon_processing_pattern";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Path CONFIG_PATH = PlatformUtil.getConfigDirectory().resolve(MOD_ID + ".json");
-
-    public static final boolean CLOTH_CONFIG_EXISTED = isClothConfigExisted();
+    public static final int BOOK_INPUT = 2;
+    public static final int BOOK_OUTPUT = 3;
     private static final GenericStack[] EMPTY = new GenericStack[0];
 
     public static void init() {
+        // TODO: config
+    }
+
+    public static boolean isPatternLike(Item item) {
+        return item == AEItems.BLANK_PATTERN.asItem() || item instanceof EncodedPatternItem;
     }
 
     public static ItemStack getProcessingPattern(SchematicannonBlockEntity schematicannon) {
@@ -100,10 +107,5 @@ public final class SchematicanonProcessingPattern {
 
     public static MutableComponent createLiteralComponent(String text) {
         return Component.literal(text);
-    }
-
-    public static boolean isClothConfigExisted() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        return loader.getResource("me/shedaniel/clothconfig2/api/ConfigBuilder.class") != null;
     }
 }
