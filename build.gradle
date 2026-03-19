@@ -1,76 +1,107 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.140'
+    id 'idea'
 }
 
-architectury {
-    minecraft = rootProject.minecraft_version
+version = "${project.mod_version}-neoforge-${project.mod_version_id}"
+group = project.maven_group
+
+repositories {
+    maven { url = "https://maven.createmod.net" }
+    maven { url = "https://maven.ithundxr.dev/snapshots" }
+    maven { url = "https://maven.blamejared.com" }
+    maven { url = "https://maven.ftb.dev/releases" }
+    maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://maven.theillusivec4.top" }
+    maven { url = "https://maven.squiddev.cc" }
+    maven { url = "https://maven.architectury.dev" }
 }
 
-subprojects {
-    apply plugin: "java"
-    apply plugin: "dev.architectury.loom"
+base {
+    archivesName = project.mod_id
+}
 
-    version = "${project.mod_version}-${project.name}-${project.version_id}"
-    group = project.maven_group
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-    base {
-        archivesName = project.mod_id
+neoForge {
+    version = project.neoforge_version
+
+    parchment {
+        minecraftVersion = project.minecraft_version
+        mappingsVersion = project.parchment_mappings_version
     }
 
-    dependencies {
-        minecraft "com.mojang:minecraft:${project.minecraft_version}"
-        mappings loom.layered {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${project.parchment_mappings}@zip")
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
         }
     }
 
-    processResources {
-        def props = [
-                mod_id           : project.mod_id,
-                mod_version      : project.version,
-                mod_name         : project.mod_name,
-                mod_description  : project.mod_description,
-                mod_license      : project.mod_license,
-                mod_author       : project.mod_author,
-                mod_source       : project.mod_source,
-                maven_group      : project.maven_group,
-                minecraft_version: project.minecraft_version
-        ]
-        inputs.properties props
-
-        filesMatching(["pack.mcmeta", "fabric.mod.json", "META-INF/*mods.toml"]) {
-            expand props
+    mods {
+        "${project.mod_id}" {
+            sourceSet(sourceSets.main)
         }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = "UTF-8"
-        options.release = 17
-    }
-
-    java {
-        withSourcesJar()
     }
 }
 
-allprojects {
-    apply plugin: "architectury-plugin"
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
 
-    repositories {
-        maven { url = "https://maven.shedaniel.me" }
-        maven { url = "https://maven.architectury.dev" }
-        maven { url = "https://maven.neoforged.net/releases" }
-        maven { url = "https://maven.parchmentmc.org" }
-        maven { url = "https://maven.terraformersmc.com" }
-        maven { url = "https://mvn.devos.one/snapshots" }
-        maven { url = "https://mvn.devos.one/releases" }
-        maven { url = "https://maven.createmod.net" }
-        maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
-        maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
-        maven { url = "https://modmaven.dev" }
-        maven { url = "https://jitpack.io" }
-        maven { url = "https://api.modrinth.com/maven" }
+dependencies {
+    implementation "com.simibubi.create:create-${project.minecraft_version}:${project.create_version}"
+    implementation "org.appliedenergistics:appliedenergistics2:${project.ae2_version}"
+    // Registrate should be included in Create, but there seems to be a problem with transitive dependencies.
+    compileOnly "com.tterrag.registrate:Registrate:MC1.21-1.3.0+67"
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var props = [
+            mod_id           : project.mod_id,
+            mod_version      : project.version,
+            mod_name         : project.mod_name,
+            mod_description  : project.mod_description,
+            mod_license      : project.mod_license,
+            mod_author       : project.mod_author,
+            mod_source       : project.mod_source,
+            maven_group      : project.maven_group,
+            minecraft_version: project.minecraft_version
+    ]
+    inputs.properties props
+    expand props
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    withSourcesJar()
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
     }
 }
