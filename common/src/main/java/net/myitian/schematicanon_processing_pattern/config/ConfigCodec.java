@@ -7,7 +7,8 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.item.ItemParser;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.StringBuilderTagVisitor;
@@ -45,7 +46,7 @@ public class ConfigCodec {
             writer.nullValue();
             return;
         }
-        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item.getItem());
+        ResourceLocation id = Registry.ITEM.getKey(item.getItem());
         StringBuilder sb = new StringBuilder()
             .append(id.getNamespace())
             .append(':')
@@ -69,7 +70,7 @@ public class ConfigCodec {
     private static ItemStack getItemStack(String string, int count) {
         StringReader sr = new StringReader(string);
         try {
-            ItemParser.ItemResult result = ItemParser.parseForItem(BuiltInRegistries.ITEM.asLookup(), sr);
+            ItemParser.ItemResult result = ItemParser.parseForItem(HolderLookup.forRegistry(Registry.ITEM), sr);
             ItemInput item = new ItemInput(result.item(), result.nbt());
             return item.createItemStack(count, true);
         } catch (CommandSyntaxException e) {

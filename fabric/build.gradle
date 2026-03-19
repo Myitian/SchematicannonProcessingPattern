@@ -22,7 +22,7 @@ shadow {
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    modImplementation "com.simibubi.create:create-fabric:${project.fabric_create_version}"
+    modImplementation "com.simibubi.create:create-fabric-${project.minecraft_version}:${project.fabric_create_version}"
     modImplementation "maven.modrinth:ae2:${project.fabric_ae2_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }

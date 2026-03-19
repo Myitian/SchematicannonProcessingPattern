@@ -3,7 +3,6 @@ package net.myitian.schematicanon_processing_pattern;
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
