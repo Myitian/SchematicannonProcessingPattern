@@ -4,7 +4,7 @@ plugins {
 }
 
 architectury {
-    minecraft = rootProject.main_minecraft_version
+    minecraft = rootProject.minecraft_version
 }
 
 subprojects {
@@ -19,23 +19,10 @@ subprojects {
     }
 
     dependencies {
-        switch (project.name) {
-            case "variant":
-            case "variant-fabric-wrapper":
-            case "variant-forge-wrapper":
-                minecraft "com.mojang:minecraft:${project.variant_minecraft_version}"
-                mappings loom.layered {
-                    officialMojangMappings()
-                    parchment("org.parchmentmc.data:parchment-${project.variant_parchment_mappings}@zip")
-                }
-                break
-            default:
-                minecraft "com.mojang:minecraft:${project.main_minecraft_version}"
-                mappings loom.layered {
-                    officialMojangMappings()
-                    parchment("org.parchmentmc.data:parchment-${project.main_parchment_mappings}@zip")
-                }
-                break
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
+        mappings loom.layered {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${project.parchment_mappings}@zip")
         }
     }
 

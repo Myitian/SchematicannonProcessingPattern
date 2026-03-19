@@ -26,7 +26,7 @@ shadow {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${project.main_forge_version}"
+    forge "net.minecraftforge:forge:${project.forge_version}"
     modImplementation "maven.modrinth:create:${project.forge_create_version}"
     modImplementation "maven.modrinth:ae2:${project.forge_ae2_version}"
 
