@@ -17,8 +17,7 @@ public final class Config {
     public static boolean addGathered = false;
     public static boolean showBlocksNotLoadedMessage = true;
     public static boolean showNbtFileName = true;
-    public static boolean useSourceBlueprint = true;
-    public static ItemStack outputItem = new ItemStack(AllItems.SCHEMATIC.get());
+    public static ItemStack outputItem = null;
 
     static {
         registerCodec(CODEC.getFieldMap());
@@ -36,10 +35,6 @@ public final class Config {
         map.put("showNbtFileName", Pair.of(
             reader -> showNbtFileName = reader.nextBoolean(),
             writer -> writer.value(showNbtFileName)
-        ));
-        map.put("useSourceBlueprint", Pair.of(
-            reader -> useSourceBlueprint = reader.nextBoolean(),
-            writer -> writer.value(useSourceBlueprint)
         ));
         map.put("outputItem", Pair.of(
             reader -> outputItem = ConfigCodec.deserializeItemStack(reader),

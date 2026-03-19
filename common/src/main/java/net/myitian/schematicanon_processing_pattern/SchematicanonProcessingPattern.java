@@ -6,10 +6,13 @@ import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
 import appeng.crafting.pattern.EncodedPatternItem;
 import com.google.common.collect.Sets;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.cannon.MaterialChecklist;
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
@@ -47,9 +50,17 @@ public final class SchematicanonProcessingPattern {
         List<GenericStack> inputs = getProcessingPatternInputs(schematicannon.checklist, Config.addGathered);
         GenericStack output = getProcessingPatternOutput(
             schematicannon.inventory,
-            Config.showNbtFileName ? getBlueprintFilename(PlatformUtil.getBlueprint(schematicannon)) : null,
-            Config.showBlocksNotLoadedMessage && schematicannon.checklist.blocksNotLoaded);
-        return PatternDetailsHelper.encodeProcessingPattern(inputs.toArray(EMPTY), new GenericStack[]{output});
+            Config.showNbtFileName ? getBlueprintFilename(PlatformUtil.getBlueprint(schematicannon)) : null);
+        ItemStack result;
+        if (inputs.isEmpty()) {
+            result = AEItems.PROCESSING_PATTERN.stack();
+        } else {
+            result = PatternDetailsHelper.encodeProcessingPattern(inputs.toArray(EMPTY), new GenericStack[]{output});
+        }
+        if (Config.showBlocksNotLoadedMessage && schematicannon.checklist.blocksNotLoaded) {
+            updateDisplayLoreTag(result.getOrCreateTag(), Component.translatable("create.materialChecklist.blocksNotLoaded"));
+        }
+        return result;
     }
 
     public static String getBlueprintFilename(ItemStack stack) {
@@ -81,24 +92,20 @@ public final class SchematicanonProcessingPattern {
         return stacks;
     }
 
-    public static GenericStack getProcessingPatternOutput(SchematicannonInventory inventory, @Nullable String filename, boolean blocksNotLoaded) {
-        ItemStack item = Config.useSourceBlueprint ? inventory.getStackInSlot(0) : null;
+    public static GenericStack getProcessingPatternOutput(SchematicannonInventory inventory, @Nullable String filename) {
+        ItemStack item = Config.outputItem;
         if (item == null || item.isEmpty()) {
-            item = Config.outputItem;
+            item = inventory.getStackInSlot(0);
         }
-        CompoundTag tag = item.getTag();
+        if (item == null || item.isEmpty()) {
+            item = new ItemStack(AllItems.SCHEMATIC.get());
+        }
+        CompoundTag tag;
         if (filename != null) {
             MutableComponent component = Component.literal(filename);
-            if (blocksNotLoaded) {
-                component
-                    .append(" ")
-                    .append(Component.translatable("create.materialChecklist.blocksNotLoaded"));
-            }
+            tag = item.getTag();
             tag = tag == null ? new CompoundTag() : tag.copy();
             updateDisplayNameTag(tag, component);
-        } else if (blocksNotLoaded) {
-            tag = tag == null ? new CompoundTag() : tag.copy();
-            updateDisplayNameTag(tag, Component.translatable("create.materialChecklist.blocksNotLoaded"));
         } else {
             tag = null;
         }
@@ -106,8 +113,16 @@ public final class SchematicanonProcessingPattern {
     }
 
     public static void updateDisplayNameTag(CompoundTag root, Component nameComponent) {
-        CompoundTag display = new CompoundTag();
+        CompoundTag display = root.getCompound("display");
         display.putString("Name", Component.Serializer.toJson(nameComponent));
+        root.put("display", display);
+    }
+
+    public static void updateDisplayLoreTag(CompoundTag root, Component loreComponent) {
+        CompoundTag display = new CompoundTag();
+        ListTag lore = new ListTag();
+        lore.add(StringTag.valueOf(Component.Serializer.toJson(loreComponent)));
+        display.put("Lore", lore);
         root.put("display", display);
     }
 
@@ -116,7 +131,7 @@ public final class SchematicanonProcessingPattern {
         ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
         boolean isPatternOut = itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem();
         if (isPatternLike(itemIn)) {
-            return !isPatternOut || itemOut.getCount() >= itemOut.getMaxStackSize();
+            return (!isPatternOut && !itemOut.isEmpty()) || itemOut.getCount() >= itemOut.getMaxStackSize();
         }
         return originalValue || isPatternOut;
     }
