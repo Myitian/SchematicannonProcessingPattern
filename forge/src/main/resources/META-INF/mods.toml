@@ -14,7 +14,7 @@ logoFile = "pack.png"
 [[dependencies.${ mod_id }]]
 modId = "minecraft"
 mandatory = true
-versionRange = "${supported_minecraft_version_forge}"
+versionRange = "1.19.2,1.20.1"
 ordering = "NONE"
 side = "BOTH"
 

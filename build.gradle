@@ -35,9 +35,7 @@ subprojects {
                 mod_license                         : project.mod_license,
                 mod_author                          : project.mod_author,
                 mod_source                          : project.mod_source,
-                maven_group                         : project.maven_group,
-                supported_minecraft_version_fabric  : project.supported_minecraft_version_fabric,
-                supported_minecraft_version_forge   : project.supported_minecraft_version_forge
+                maven_group                         : project.maven_group
         ]
         inputs.properties props
 
