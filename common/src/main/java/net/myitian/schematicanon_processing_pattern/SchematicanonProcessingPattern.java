@@ -15,6 +15,8 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.config.Config;
@@ -58,7 +60,7 @@ public final class SchematicanonProcessingPattern {
             result = PatternDetailsHelper.encodeProcessingPattern(inputs.toArray(EMPTY), new GenericStack[]{output});
         }
         if (Config.showBlocksNotLoadedMessage && schematicannon.checklist.blocksNotLoaded) {
-            updateDisplayLoreTag(result.getOrCreateTag(), Component.translatable("create.materialChecklist.blocksNotLoaded"));
+            updateDisplayLoreTag(result.getOrCreateTag(), new TranslatableComponent("create.materialChecklist.blocksNotLoaded"));
         }
         return result;
     }
@@ -102,7 +104,7 @@ public final class SchematicanonProcessingPattern {
         }
         CompoundTag tag;
         if (filename != null) {
-            MutableComponent component = Component.literal(filename);
+            MutableComponent component = new TextComponent(filename);
             tag = item.getTag();
             tag = tag == null ? new CompoundTag() : tag.copy();
             updateDisplayNameTag(tag, component);
