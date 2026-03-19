@@ -11,7 +11,7 @@ subprojects {
     apply plugin: "java"
     apply plugin: "dev.architectury.loom"
 
-    version = "${project.mod_version}-${project.name}-${project.version_id}"
+    version = "${project.mod_version}-${project.name}-${project.mod_version_id}"
     group = project.maven_group
 
     base {
