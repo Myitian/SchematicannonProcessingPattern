@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("UnstableApiUsage")
 @Mixin(value = SchematicannonInventory.class, remap = false)
 abstract class SchematicannonInventoryMixin {
     @Inject( // 1.20.1 new version

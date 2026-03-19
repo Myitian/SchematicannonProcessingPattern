@@ -8,7 +8,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.item.ItemParser;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.StringBuilderTagVisitor;
@@ -101,14 +100,13 @@ public class ConfigCodec {
         return nameSet.size() == fieldMap.size();
     }
 
-    public boolean serialize(JsonWriter writer) throws IOException {
+    public void serialize(JsonWriter writer) throws IOException {
         writer.beginObject();
         for (var fieldInfo : fieldMap.entrySet()) {
             writer.name(fieldInfo.getKey());
             fieldInfo.getValue().getRight().accept(writer);
         }
         writer.endObject();
-        return true;
     }
 
     @FunctionalInterface

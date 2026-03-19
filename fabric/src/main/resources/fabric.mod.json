@@ -14,7 +14,7 @@
   "icon": "pack.png",
   "environment": "*",
   "mixins": [
-    "${mod_id}-common.mixins.json"
+    "${mod_id}.mixins.json"
   ],
   "entrypoints": {
     "main": [

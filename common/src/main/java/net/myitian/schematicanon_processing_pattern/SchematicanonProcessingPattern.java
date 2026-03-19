@@ -96,9 +96,9 @@ public final class SchematicanonProcessingPattern {
         ItemStack item = Config.outputItem;
         if (item == null || item.isEmpty()) {
             item = PlatformUtil.getBlueprint(inventory);
-        }
-        if (item == null || item.isEmpty()) {
-            item = new ItemStack(AllItems.SCHEMATIC.get());
+            if (item.isEmpty()) {
+                item = new ItemStack(AllItems.SCHEMATIC.get());
+            }
         }
         CompoundTag tag;
         if (filename != null) {

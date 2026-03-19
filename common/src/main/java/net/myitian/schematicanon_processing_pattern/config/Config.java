@@ -2,7 +2,6 @@ package net.myitian.schematicanon_processing_pattern.config;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.simibubi.create.AllItems;
 import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
 import org.apache.commons.lang3.tuple.Pair;
@@ -52,14 +51,13 @@ public final class Config {
         return false;
     }
 
-    public static boolean save(File configFile) {
+    public static void save(File configFile) {
         try (var writer = new JsonWriter(new FileWriter(configFile))) {
             writer.setHtmlSafe(false);
             writer.setIndent("  ");
-            return CODEC.serialize(writer);
+            CODEC.serialize(writer);
         } catch (Exception e) {
             SchematicanonProcessingPattern.LOGGER.warn("Failed to write config: {}", e.getLocalizedMessage());
         }
-        return false;
     }
 }
