@@ -50,7 +50,7 @@ public final class SchematicanonProcessingPattern {
         List<GenericStack> inputs = getProcessingPatternInputs(schematicannon.checklist, Config.addGathered);
         GenericStack output = getProcessingPatternOutput(
             schematicannon.inventory,
-            Config.showNbtFileName ? getBlueprintFilename(PlatformUtil.getBlueprint(schematicannon)) : null);
+            Config.showNbtFileName ? getBlueprintFilename(PlatformUtil.getBlueprint(schematicannon.inventory)) : null);
         ItemStack result;
         if (inputs.isEmpty()) {
             result = AEItems.PROCESSING_PATTERN.stack();
@@ -95,7 +95,7 @@ public final class SchematicanonProcessingPattern {
     public static GenericStack getProcessingPatternOutput(SchematicannonInventory inventory, @Nullable String filename) {
         ItemStack item = Config.outputItem;
         if (item == null || item.isEmpty()) {
-            item = inventory.getStackInSlot(0);
+            item = PlatformUtil.getBlueprint(inventory);
         }
         if (item == null || item.isEmpty()) {
             item = new ItemStack(AllItems.SCHEMATIC.get());
@@ -127,8 +127,8 @@ public final class SchematicanonProcessingPattern {
     }
 
     public static boolean checkItem(SchematicannonInventory inventory, boolean originalValue) {
-        Item itemIn = inventory.getStackInSlot(BOOK_INPUT).getItem();
-        ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
+        Item itemIn = PlatformUtil.getBookInput(inventory).getItem();
+        ItemStack itemOut = PlatformUtil.getBookOutput(inventory);
         boolean isPatternOut = itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem();
         if (isPatternLike(itemIn)) {
             return (!isPatternOut && !itemOut.isEmpty()) || itemOut.getCount() >= itemOut.getMaxStackSize();
