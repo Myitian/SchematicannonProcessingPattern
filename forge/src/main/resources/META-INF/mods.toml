@@ -21,7 +21,7 @@ side = "BOTH"
 [[dependencies.${ mod_id }]]
 modId = "create"
 mandatory = true
-versionRange = "[0,)"
+versionRange = "[0.5.1,)"
 ordering = "NONE"
 side = "BOTH"
 

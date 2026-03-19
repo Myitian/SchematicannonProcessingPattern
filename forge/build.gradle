@@ -35,9 +35,7 @@ dependencies {
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-    exclude "*-refmap.json"
+    exclude("fabric.mod.json", "architectury.common.json", "*-refmap.json", "architectury_inject*/**")
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = "dev-shadow"
 }

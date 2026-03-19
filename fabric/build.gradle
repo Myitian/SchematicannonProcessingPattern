@@ -22,7 +22,6 @@ shadow {
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
     modImplementation "com.simibubi.create:create-fabric:${project.fabric_create_version}"
     modImplementation "maven.modrinth:ae2:${project.fabric_ae2_version}"
 
@@ -31,7 +30,7 @@ dependencies {
 }
 
 shadowJar {
-    exclude "architectury.common.json"
+    exclude("fabric.mod.json", "architectury.common.json", "*-refmap.json", "architectury_inject*/**")
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = "dev-shadow"
 }

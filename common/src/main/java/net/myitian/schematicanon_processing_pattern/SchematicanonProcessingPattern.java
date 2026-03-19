@@ -40,13 +40,13 @@ public final class SchematicanonProcessingPattern {
 
     public static ItemStack getProcessingPattern(SchematicannonBlockEntity schematicannon) {
         ItemStack blueprint = PlatformUtil.getBlueprint(schematicannon);
-        String filename = getFilename(blueprint);
+        String filename = getBlueprintFilename(blueprint);
         List<GenericStack> inputs = getProcessingPatternInputs(schematicannon.checklist, false);
         GenericStack output = getProcessingPatternOutput(filename, schematicannon.checklist.blocksNotLoaded);
         return PatternDetailsHelper.encodeProcessingPattern(inputs.toArray(EMPTY), new GenericStack[]{output});
     }
 
-    public static String getFilename(ItemStack stack) {
+    public static String getBlueprintFilename(ItemStack stack) {
         if (stack == null) {
             return null;
         }
@@ -70,7 +70,7 @@ public final class SchematicanonProcessingPattern {
                     continue;
                 }
             }
-            stacks.add(new GenericStack(AEItemKey.of(item), amount));
+            stacks.add(new GenericStack(AEItemKey.of(item, null), amount));
         }
         return stacks;
     }
@@ -90,7 +90,7 @@ public final class SchematicanonProcessingPattern {
         } else {
             tag = null;
         }
-        return new GenericStack(AEItemKey.of(AllItems.SCHEMATIC, tag), 1);
+        return new GenericStack(AEItemKey.of(AllItems.SCHEMATIC.get(), tag), 1);
     }
 
     public static CompoundTag createDisplayNameTag(Component nameComponent) {

@@ -23,7 +23,7 @@
   },
   "depends": {
     "minecraft": "${supported_minecraft_version_fabric}",
-    "create": "*",
+    "create": ">=0.5.1",
     "ae2": "*"
   }
 }
