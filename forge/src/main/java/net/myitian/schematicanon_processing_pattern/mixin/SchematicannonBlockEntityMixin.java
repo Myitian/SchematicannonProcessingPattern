@@ -1,9 +1,7 @@
 package net.myitian.schematicanon_processing_pattern.mixin;
 
-import appeng.core.definitions.AEItems;
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.*;
+import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_INPUT;
+import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_OUTPUT;
 
 @Mixin(value = SchematicannonBlockEntity.class, remap = false)
 abstract class SchematicannonBlockEntityMixin {
@@ -31,15 +30,7 @@ abstract class SchematicannonBlockEntityMixin {
         name = "outputFull",
         remap = false)
     private boolean tickPaperPrinter_customCheck(boolean value) {
-        Item itemIn = inventory.getStackInSlot(BOOK_INPUT).getItem();
-        ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
-        if (SchematicanonProcessingPattern.isPatternLike(itemIn)) {
-            return itemOut.getCount() >= itemOut.getMaxStackSize();
-        }
-        if (itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem()) {
-            return true;
-        }
-        return value;
+        return SchematicanonProcessingPattern.checkItem(inventory, value);
     }
 
     @Inject(

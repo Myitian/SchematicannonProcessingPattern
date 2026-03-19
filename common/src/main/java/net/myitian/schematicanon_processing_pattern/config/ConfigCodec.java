@@ -3,6 +3,15 @@ package net.myitian.schematicanon_processing_pattern.config;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.commands.arguments.item.ItemInput;
+import net.minecraft.commands.arguments.item.ItemParser;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.myitian.schematicanon_processing_pattern.StringBuilderTagVisitor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
@@ -13,6 +22,61 @@ import java.util.Set;
 
 public class ConfigCodec {
     private final LinkedHashMap<String, Pair<ConsumerWithIOException<JsonReader>, ConsumerWithIOException<JsonWriter>>> fieldMap = new LinkedHashMap<>();
+
+    public static ItemStack deserializeItemStack(JsonReader reader) throws IOException {
+        switch (reader.peek()) {
+            case NULL -> {
+                reader.nextNull();
+                return ItemStack.EMPTY;
+            }
+            case BEGIN_ARRAY -> {
+                String item = reader.nextString();
+                int count = reader.nextInt();
+                reader.endArray();
+                return getItemStack(item, count);
+            }
+            default -> {
+                return getItemStack(reader.nextString(), 1);
+            }
+        }
+    }
+
+    public static void serializeItemStack(JsonWriter writer, ItemStack item) throws IOException {
+        if (item == null || item.isEmpty()) {
+            writer.nullValue();
+            return;
+        }
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item.getItem());
+        StringBuilder sb = new StringBuilder()
+            .append(id.getNamespace())
+            .append(':')
+            .append(id.getPath());
+        StringBuilderTagVisitor visitor = new StringBuilderTagVisitor(sb);
+        if (item.hasTag()) {
+            assert item.getTag() != null;
+            item.getTag().accept(visitor);
+        }
+        String result = visitor.toString();
+        if (item.getCount() <= 1) {
+            writer.value(result);
+        } else {
+            writer.beginArray();
+            writer.value(result);
+            writer.value(item.getCount());
+            writer.endArray();
+        }
+    }
+
+    private static ItemStack getItemStack(String string, int count) {
+        StringReader sr = new StringReader(string);
+        try {
+            ItemParser.ItemResult result = ItemParser.parseForItem(BuiltInRegistries.ITEM.asLookup(), sr);
+            ItemInput item = new ItemInput(result.item(), result.nbt());
+            return item.createItemStack(count, true);
+        } catch (CommandSyntaxException e) {
+            return ItemStack.EMPTY;
+        }
+    }
 
     public Map<String, Pair<ConsumerWithIOException<JsonReader>, ConsumerWithIOException<JsonWriter>>> getFieldMap() {
         return fieldMap;

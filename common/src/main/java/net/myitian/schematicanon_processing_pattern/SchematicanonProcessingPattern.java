@@ -6,18 +6,20 @@ import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
 import appeng.crafting.pattern.EncodedPatternItem;
 import com.google.common.collect.Sets;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.cannon.MaterialChecklist;
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
+import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.myitian.schematicanon_processing_pattern.config.Config;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,11 @@ public final class SchematicanonProcessingPattern {
     public static final int BOOK_OUTPUT = 3;
     private static final GenericStack[] EMPTY = new GenericStack[0];
 
-    public static void init() {
-        // TODO: config
+    public static void reloadConfig() {
+        File configFile = CONFIG_PATH.toFile();
+        if (!Config.load(configFile)) {
+            Config.save(configFile);
+        }
     }
 
     public static boolean isPatternLike(Item item) {
@@ -39,10 +44,11 @@ public final class SchematicanonProcessingPattern {
     }
 
     public static ItemStack getProcessingPattern(SchematicannonBlockEntity schematicannon) {
-        ItemStack blueprint = PlatformUtil.getBlueprint(schematicannon);
-        String filename = getBlueprintFilename(blueprint);
-        List<GenericStack> inputs = getProcessingPatternInputs(schematicannon.checklist, false);
-        GenericStack output = getProcessingPatternOutput(filename, schematicannon.checklist.blocksNotLoaded);
+        List<GenericStack> inputs = getProcessingPatternInputs(schematicannon.checklist, Config.addGathered);
+        GenericStack output = getProcessingPatternOutput(
+            schematicannon.inventory,
+            Config.showNbtFileName ? getBlueprintFilename(PlatformUtil.getBlueprint(schematicannon)) : null,
+            Config.showBlocksNotLoadedMessage && schematicannon.checklist.blocksNotLoaded);
         return PatternDetailsHelper.encodeProcessingPattern(inputs.toArray(EMPTY), new GenericStack[]{output});
     }
 
@@ -75,37 +81,43 @@ public final class SchematicanonProcessingPattern {
         return stacks;
     }
 
-    public static GenericStack getProcessingPatternOutput(@Nullable String filename, boolean blocksNotLoaded) {
-        CompoundTag tag;
+    public static GenericStack getProcessingPatternOutput(SchematicannonInventory inventory, @Nullable String filename, boolean blocksNotLoaded) {
+        ItemStack item = Config.useSourceBlueprint ? inventory.getStackInSlot(0) : null;
+        if (item == null || item.isEmpty()) {
+            item = Config.outputItem;
+        }
+        CompoundTag tag = item.getTag();
         if (filename != null) {
-            MutableComponent component = createLiteralComponent(filename);
+            MutableComponent component = Component.literal(filename);
             if (blocksNotLoaded) {
                 component
                     .append(" ")
-                    .append(createTranslatableComponent("create.materialChecklist.blocksNotLoaded"));
+                    .append(Component.translatable("create.materialChecklist.blocksNotLoaded"));
             }
-            tag = createDisplayNameTag(component);
+            tag = tag == null ? new CompoundTag() : tag.copy();
+            updateDisplayNameTag(tag, component);
         } else if (blocksNotLoaded) {
-            tag = createDisplayNameTag(createTranslatableComponent("create.materialChecklist.blocksNotLoaded"));
+            tag = tag == null ? new CompoundTag() : tag.copy();
+            updateDisplayNameTag(tag, Component.translatable("create.materialChecklist.blocksNotLoaded"));
         } else {
             tag = null;
         }
-        return new GenericStack(AEItemKey.of(AllItems.SCHEMATIC.get(), tag), 1);
+        return new GenericStack(AEItemKey.of(item.getItem(), tag), item.getCount());
     }
 
-    public static CompoundTag createDisplayNameTag(Component nameComponent) {
-        CompoundTag root = new CompoundTag();
+    public static void updateDisplayNameTag(CompoundTag root, Component nameComponent) {
         CompoundTag display = new CompoundTag();
         display.putString("Name", Component.Serializer.toJson(nameComponent));
         root.put("display", display);
-        return root;
     }
 
-    public static MutableComponent createTranslatableComponent(String key) {
-        return Component.translatable(key);
-    }
-
-    public static MutableComponent createLiteralComponent(String text) {
-        return Component.literal(text);
+    public static boolean checkItem(SchematicannonInventory inventory, boolean originalValue) {
+        Item itemIn = inventory.getStackInSlot(BOOK_INPUT).getItem();
+        ItemStack itemOut = inventory.getStackInSlot(BOOK_OUTPUT);
+        boolean isPatternOut = itemOut.getItem() == AEItems.PROCESSING_PATTERN.asItem();
+        if (isPatternLike(itemIn)) {
+            return !isPatternOut || itemOut.getCount() >= itemOut.getMaxStackSize();
+        }
+        return originalValue || isPatternOut;
     }
 }

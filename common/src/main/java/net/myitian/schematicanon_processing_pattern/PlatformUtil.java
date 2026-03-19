@@ -2,6 +2,7 @@ package net.myitian.schematicanon_processing_pattern;
 
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.ItemStack;
 
 import java.nio.file.Path;

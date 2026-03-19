@@ -2,6 +2,8 @@ package net.myitian.schematicanon_processing_pattern.config;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.simibubi.create.AllItems;
+import net.minecraft.world.item.ItemStack;
 import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -12,12 +14,37 @@ import java.util.Map;
 
 public final class Config {
     private static final ConfigCodec CODEC = new ConfigCodec();
+    public static boolean addGathered = false;
+    public static boolean showBlocksNotLoadedMessage = true;
+    public static boolean showNbtFileName = true;
+    public static boolean useSourceBlueprint = true;
+    public static ItemStack outputItem = new ItemStack(AllItems.SCHEMATIC.get());
 
     static {
         registerCodec(CODEC.getFieldMap());
     }
 
     public static void registerCodec(Map<String, Pair<ConfigCodec.ConsumerWithIOException<JsonReader>, ConfigCodec.ConsumerWithIOException<JsonWriter>>> map) {
+        map.put("addGathered", Pair.of(
+            reader -> addGathered = reader.nextBoolean(),
+            writer -> writer.value(addGathered)
+        ));
+        map.put("showBlocksNotLoadedMessage", Pair.of(
+            reader -> showBlocksNotLoadedMessage = reader.nextBoolean(),
+            writer -> writer.value(showBlocksNotLoadedMessage)
+        ));
+        map.put("showNbtFileName", Pair.of(
+            reader -> showNbtFileName = reader.nextBoolean(),
+            writer -> writer.value(showNbtFileName)
+        ));
+        map.put("useSourceBlueprint", Pair.of(
+            reader -> useSourceBlueprint = reader.nextBoolean(),
+            writer -> writer.value(useSourceBlueprint)
+        ));
+        map.put("outputItem", Pair.of(
+            reader -> outputItem = ConfigCodec.deserializeItemStack(reader),
+            writer -> ConfigCodec.serializeItemStack(writer, outputItem)
+        ));
     }
 
     public static boolean load(File configFile) {

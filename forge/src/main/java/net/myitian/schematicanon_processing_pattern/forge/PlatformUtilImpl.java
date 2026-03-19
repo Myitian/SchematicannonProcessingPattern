@@ -2,6 +2,7 @@ package net.myitian.schematicanon_processing_pattern.forge;
 
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
