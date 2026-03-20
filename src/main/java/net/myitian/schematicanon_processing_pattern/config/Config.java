@@ -12,25 +12,34 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import java.util.Map;
 
 public final class Config {
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-    public static final ModConfigSpec.BooleanValue ADD_GATHERED = BUILDER
-        .comment("Whether should add already collected item to result processing pattern.")
-        .define("addGathered", false);
-    public static final ModConfigSpec.BooleanValue SHOW_BLOCKS_NOT_LOADED_MESSAGE = BUILDER
-        .comment("Whether should add the 'create.materialChecklist.blocksNotLoaded' message to item lore when some chunks not loaded.")
-        .define("showBlocksNotLoadedMessage", true);
-    public static final ModConfigSpec.BooleanValue SHOW_NBT_FILE_NAME = BUILDER
-        .comment("Whether should rename the output item to the nbt file name.")
-        .define("showNbtFileName", true);
-    public static final ModConfigSpec SPEC = BUILDER.build();
+    public static final ModConfigSpec.BooleanValue ADD_GATHERED;
+    public static final ModConfigSpec.BooleanValue SHOW_BLOCKS_NOT_LOADED_MESSAGE;
+    public static final ModConfigSpec.BooleanValue SHOW_NBT_FILE_NAME;
+    public static final ModConfigSpec.ConfigValue<String> OUTPUT_ITEM_RAW;
+    public static final ModConfigSpec SPEC;
+
     private static final RegistryAccess.Frozen ITEM_REGISTRY_ACCESS = new RegistryAccess.ImmutableRegistryAccess(
         Map.of(BuiltInRegistries.ITEM.key(), BuiltInRegistries.ITEM)).freeze();
     private static final ItemParser ITEM_PARSER = new ItemParser(ITEM_REGISTRY_ACCESS);
-    public static final ModConfigSpec.ConfigValue<String> OUTPUT_ITEM_RAW = BUILDER
-        .comment("The placeholder output item in processing pattern. Leave empty to use source blueprint.")
-        .define("outputItem", "", Config::validateItemStackString);
     private static boolean dirty = true;
     private static ItemStack outputItem = ItemStack.EMPTY;
+
+    static {
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
+        ADD_GATHERED = builder
+            .comment("Whether should add already collected item to result processing pattern.")
+            .define("addGathered", false);
+        SHOW_BLOCKS_NOT_LOADED_MESSAGE = builder
+            .comment("Whether should add the 'create.materialChecklist.blocksNotLoaded' message to item lore when some chunks not loaded.")
+            .define("showBlocksNotLoadedMessage", true);
+        SHOW_NBT_FILE_NAME = builder
+            .comment("Whether should rename the output item to the nbt file name.")
+            .define("showNbtFileName", true);
+        OUTPUT_ITEM_RAW = builder
+            .comment("The placeholder output item in processing pattern. Leave empty to use source blueprint.")
+            .define("outputItem", "", Config::validateItemStackString);
+        SPEC = builder.build();
+    }
 
     public static void markDirty() {
         dirty = true;
