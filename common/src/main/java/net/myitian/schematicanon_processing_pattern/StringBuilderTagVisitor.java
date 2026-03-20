@@ -2,7 +2,7 @@ package net.myitian.schematicanon_processing_pattern;
 
 import net.minecraft.nbt.*;
 
-public class StringBuilderTagVisitor implements TagVisitor {
+public final class StringBuilderTagVisitor implements TagVisitor {
     private final StringBuilder builder;
 
     public StringBuilderTagVisitor(StringBuilder builder) {
