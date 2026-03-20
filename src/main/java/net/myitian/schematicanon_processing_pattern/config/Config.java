@@ -22,13 +22,13 @@ public final class Config {
     public static final ModConfigSpec.BooleanValue SHOW_NBT_FILE_NAME = BUILDER
         .comment("Whether should rename the output item to the nbt file name.")
         .define("showNbtFileName", true);
-    public static final ModConfigSpec.ConfigValue<String> OUTPUT_ITEM_RAW = BUILDER
-        .comment("The placeholder output item in processing pattern. Leave empty to use source blueprint.")
-        .define("outputItem", "");
     public static final ModConfigSpec SPEC = BUILDER.build();
     private static final RegistryAccess.Frozen ITEM_REGISTRY_ACCESS = new RegistryAccess.ImmutableRegistryAccess(
         Map.of(BuiltInRegistries.ITEM.key(), BuiltInRegistries.ITEM)).freeze();
     private static final ItemParser ITEM_PARSER = new ItemParser(ITEM_REGISTRY_ACCESS);
+    public static final ModConfigSpec.ConfigValue<String> OUTPUT_ITEM_RAW = BUILDER
+        .comment("The placeholder output item in processing pattern. Leave empty to use source blueprint.")
+        .define("outputItem", "", Config::validateItemStackString);
     private static boolean dirty = true;
     private static ItemStack outputItem = ItemStack.EMPTY;
 
@@ -38,18 +38,22 @@ public final class Config {
 
     public static ItemStack getOutputItem() {
         if (dirty) {
-            outputItem = getItemStack(OUTPUT_ITEM_RAW.get(), 1);
+            outputItem = getItemStack(OUTPUT_ITEM_RAW.get());
             dirty = false;
         }
         return outputItem;
     }
 
-    private static ItemStack getItemStack(String string, int count) {
+    private static boolean validateItemStackString(Object object) {
+        return object instanceof String string && (string.isEmpty() || !getItemStack(string).isEmpty());
+    }
+
+    private static ItemStack getItemStack(String string) {
         StringReader sr = new StringReader(string);
         try {
             ItemParser.ItemResult result = ITEM_PARSER.parse(sr);
             ItemInput item = new ItemInput(result.item(), result.components());
-            return item.createItemStack(count, true);
+            return item.createItemStack(1, true);
         } catch (CommandSyntaxException e) {
             return ItemStack.EMPTY;
         }

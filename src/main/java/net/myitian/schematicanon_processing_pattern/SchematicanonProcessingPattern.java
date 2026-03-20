@@ -83,8 +83,12 @@ public final class SchematicanonProcessingPattern {
         if (item == null || item.isEmpty()) {
             item = inventory.getStackInSlot(0);
             if (item.isEmpty()) {
-                item = new ItemStack(AllItems.SCHEMATIC.get());
+                item = AllItems.SCHEMATIC.asStack();
+            } else {
+                item = item.copy();
             }
+        } else {
+            item = item.copy();
         }
         if (filename != null) {
             MutableComponent component = Component.literal(filename);
