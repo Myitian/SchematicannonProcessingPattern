@@ -18,13 +18,8 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
-      - name: capture build artifacts - fabric
+      - name: capture build artifacts - neoforge
         uses: actions/upload-artifact@v7
         with:
-          name: Artifacts - Fabric
-          path: fabric/build/libs/
-      - name: capture build artifacts - forge
-        uses: actions/upload-artifact@v7
-        with:
-          name: Artifacts - Forge
-          path: forge/build/libs/
+          name: Artifacts - NeoForge
+          path: build/libs/
