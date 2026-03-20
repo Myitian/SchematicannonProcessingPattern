@@ -1,5 +1,7 @@
 # Schematicanon Processing Pattern
 
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1490857?style=for-the-badge&logo=curseforge&label=CurseForge%20Downloads&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/schematicanon-processing-pattern)
+
 Generate AE2 processing pattern from Create schematicanon.
 
 ![Example](.github/example.png)
