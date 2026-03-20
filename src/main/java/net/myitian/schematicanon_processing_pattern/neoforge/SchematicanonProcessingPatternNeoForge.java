@@ -11,7 +11,7 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 
 @Mod(SchematicanonProcessingPattern.MOD_ID)
 @EventBusSubscriber(modid = SchematicanonProcessingPattern.MOD_ID)
-public class SchematicanonProcessingPatternNeoForge {
+public final class SchematicanonProcessingPatternNeoForge {
     public SchematicanonProcessingPatternNeoForge(ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }

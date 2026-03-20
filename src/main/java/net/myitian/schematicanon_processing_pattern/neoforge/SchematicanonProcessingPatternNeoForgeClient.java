@@ -8,7 +8,7 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(value = SchematicanonProcessingPattern.MOD_ID, dist = Dist.CLIENT)
-public class SchematicanonProcessingPatternNeoForgeClient {
+public final class SchematicanonProcessingPatternNeoForgeClient {
     public SchematicanonProcessingPatternNeoForgeClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
