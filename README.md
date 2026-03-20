@@ -2,7 +2,7 @@
 
 Generate AE2 processing pattern from Create schematicanon.
 
-![.github/example.png](.github/example.png)
+![Example](.github/example.png)
 
 > [!NOTE]
 >
@@ -21,3 +21,7 @@ Generate AE2 processing pattern from Create schematicanon.
 - **[1.19.2](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.19.2):** Support Minecraft 1.19.2 Fabric/Forge
 - **[1.20.1](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.20.1):** Support Minecraft 1.20.1 Fabric/Forge
 - **[1.21.1](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.21.1):** Support Minecraft 1.21.1 NeoForge
+
+## Thanks
+
+[@Platinol (Bilibili)](https://space.bilibili.com/221810797) - https://www.bilibili.com/video/BV14DwRz9E67
