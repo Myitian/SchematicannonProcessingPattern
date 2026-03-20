@@ -43,7 +43,6 @@ abstract class SchematicannonBlockEntityMixin {
         cancellable = true,
         remap = false)
     private void tickPaperPrinter_customItem(CallbackInfo ci, @Local(name = "extractItem") ItemStack extractItem) {
-        SchematicanonProcessingPattern.LOGGER.info("test");
         if (SchematicanonProcessingPattern.isPatternLike(extractItem.getItem())) {
             ItemStack stack = SchematicanonProcessingPattern.getProcessingPattern((SchematicannonBlockEntity) (Object) this);
             stack.setCount(inventory.getStackInSlot(BOOK_OUTPUT).getCount() + 1);
