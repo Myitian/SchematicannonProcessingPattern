@@ -82,16 +82,10 @@ public final class SchematicanonProcessingPattern {
         ItemStack item = Config.getOutputItem();
         if (item == null || item.isEmpty()) {
             item = inventory.getStackInSlot(0);
-            if (item.isEmpty()) {
-                item = AllItems.SCHEMATIC.asStack();
-            } else {
-                item = item.copy();
-            }
-        } else {
-            item = item.copy();
         }
         if (filename != null) {
             MutableComponent component = Component.literal(filename);
+            item = item.isEmpty() ? AllItems.SCHEMATIC.asStack() : item.copy();
             updateDisplayNameTag(item, component);
         }
         return new GenericStack(AEItemKey.of(item), item.getCount());
