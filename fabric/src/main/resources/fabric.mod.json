@@ -18,7 +18,7 @@
   ],
   "entrypoints": {
     "main": [
-      "${maven_group}.fabric.SchematicanonProcessingPatternFabric"
+      "${maven_group}.fabric.SchematicannonProcessingPatternFabric"
     ]
   },
   "depends": {

@@ -1,9 +1,9 @@
-package net.myitian.schematicanon_processing_pattern.forge;
+package net.myitian.schematicannon_processing_pattern.forge;
 
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
+import net.myitian.schematicannon_processing_pattern.SchematicannonProcessingPattern;
 
 import java.nio.file.Path;
 
@@ -17,10 +17,10 @@ public final class PlatformUtilImpl {
     }
 
     public static ItemStack getBookInput(SchematicannonInventory inventory) {
-        return inventory.getStackInSlot(SchematicanonProcessingPattern.BOOK_INPUT); // minecraftforge
+        return inventory.getStackInSlot(SchematicannonProcessingPattern.BOOK_INPUT); // minecraftforge
     }
 
     public static ItemStack getBookOutput(SchematicannonInventory inventory) {
-        return inventory.getStackInSlot(SchematicanonProcessingPattern.BOOK_OUTPUT); // minecraftforge
+        return inventory.getStackInSlot(SchematicannonProcessingPattern.BOOK_OUTPUT); // minecraftforge
     }
 }

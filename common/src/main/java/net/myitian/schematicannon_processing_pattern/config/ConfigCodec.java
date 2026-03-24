@@ -1,4 +1,4 @@
-package net.myitian.schematicanon_processing_pattern.config;
+package net.myitian.schematicannon_processing_pattern.config;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -10,7 +10,7 @@ import net.minecraft.commands.arguments.item.ItemParser;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.myitian.schematicanon_processing_pattern.StringBuilderTagVisitor;
+import net.myitian.schematicannon_processing_pattern.StringBuilderTagVisitor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;

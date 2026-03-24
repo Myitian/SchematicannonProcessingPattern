@@ -1,8 +1,8 @@
-package net.myitian.schematicanon_processing_pattern.mixin;
+package net.myitian.schematicannon_processing_pattern.mixin;
 
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import net.minecraft.world.item.ItemStack;
-import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
+import net.myitian.schematicannon_processing_pattern.SchematicannonProcessingPattern;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,7 +16,7 @@ abstract class SchematicannonInventoryMixin {
         cancellable = true,
         remap = false)
     private void isItemValid(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (slot == 2 && SchematicanonProcessingPattern.isPatternLike(stack.getItem())) {
+        if (slot == 2 && SchematicannonProcessingPattern.isPatternLike(stack.getItem())) {
             cir.setReturnValue(true);
         }
     }

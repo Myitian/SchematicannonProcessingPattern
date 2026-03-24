@@ -1,9 +1,9 @@
-package net.myitian.schematicanon_processing_pattern.mixin;
+package net.myitian.schematicannon_processing_pattern.mixin;
 
 import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import net.minecraft.world.item.ItemStack;
-import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
+import net.myitian.schematicannon_processing_pattern.SchematicannonProcessingPattern;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_INPUT;
-import static net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern.BOOK_OUTPUT;
+import static net.myitian.schematicannon_processing_pattern.SchematicannonProcessingPattern.BOOK_INPUT;
+import static net.myitian.schematicannon_processing_pattern.SchematicannonProcessingPattern.BOOK_OUTPUT;
 
 @Mixin(value = SchematicannonBlockEntity.class, remap = false)
 abstract class SchematicannonBlockEntityMixin {
@@ -30,7 +30,7 @@ abstract class SchematicannonBlockEntityMixin {
         name = "outputFull",
         remap = false)
     private boolean tickPaperPrinter_customCheck(boolean value) {
-        return SchematicanonProcessingPattern.checkItem(inventory, value);
+        return SchematicannonProcessingPattern.checkItem(inventory, value);
     }
 
     @Inject(
@@ -44,9 +44,9 @@ abstract class SchematicannonBlockEntityMixin {
         remap = false)
     private void tickPaperPrinter_customItem(CallbackInfo ci) {
         ItemStack extractItem = inventory.extractItem(BOOK_INPUT, 1, true);
-        if (SchematicanonProcessingPattern.isPatternLike(extractItem.getItem())) {
+        if (SchematicannonProcessingPattern.isPatternLike(extractItem.getItem())) {
             inventory.extractItem(BOOK_INPUT, 1, false);
-            ItemStack stack = SchematicanonProcessingPattern.getProcessingPattern((SchematicannonBlockEntity) (Object) this);
+            ItemStack stack = SchematicannonProcessingPattern.getProcessingPattern((SchematicannonBlockEntity) (Object) this);
             stack.setCount(inventory.getStackInSlot(BOOK_OUTPUT).getCount() + 1);
             inventory.setStackInSlot(BOOK_OUTPUT, stack);
             sendUpdate = true;
