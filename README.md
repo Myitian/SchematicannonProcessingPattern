@@ -1,8 +1,8 @@
-# Schematicanon Processing Pattern
+# Schematicannon Processing Pattern
 
-[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1490857?style=for-the-badge&logo=curseforge&label=CurseForge%20Downloads&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/schematicanon-processing-pattern)
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1490857?style=for-the-badge&logo=curseforge&label=CurseForge%20Downloads&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/schematicannon-processing-pattern)
 
-Generate AE2 processing pattern from Create schematicanon.
+Generate AE2 processing pattern from Create schematicannon.
 
 ![Example](.github/example.png)
 
@@ -19,10 +19,10 @@ Generate AE2 processing pattern from Create schematicanon.
 
 ## Branch information
 
-- **[1.18.2](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.18.2):** Support Minecraft 1.18.2 Fabric/Forge
-- **[1.19.2](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.19.2):** Support Minecraft 1.19.2 Fabric/Forge
-- **[1.20.1](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.20.1):** Support Minecraft 1.20.1 Fabric/Forge
-- **[1.21.1](https://github.com/Myitian/SchematicanonProcessingPattern/tree/1.21.1):** Support Minecraft 1.21.1 NeoForge
+- **[1.18.2](https://github.com/Myitian/SchematicannonProcessingPattern/tree/1.18.2):** Support Minecraft 1.18.2 Fabric/Forge
+- **[1.19.2](https://github.com/Myitian/SchematicannonProcessingPattern/tree/1.19.2):** Support Minecraft 1.19.2 Fabric/Forge
+- **[1.20.1](https://github.com/Myitian/SchematicannonProcessingPattern/tree/1.20.1):** Support Minecraft 1.20.1 Fabric/Forge
+- **[1.21.1](https://github.com/Myitian/SchematicannonProcessingPattern/tree/1.21.1):** Support Minecraft 1.21.1 NeoForge
 
 ## Thanks
 
