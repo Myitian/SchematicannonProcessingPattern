@@ -1,9 +1,9 @@
-package net.myitian.schematicanon_processing_pattern.config;
+package net.myitian.schematicannon_processing_pattern.config;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import net.minecraft.world.item.ItemStack;
-import net.myitian.schematicanon_processing_pattern.SchematicanonProcessingPattern;
+import net.myitian.schematicannon_processing_pattern.SchematicannonProcessingPattern;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public final class Config {
             reader.setLenient(true);
             return CODEC.deserialize(reader);
         } catch (Exception e) {
-            SchematicanonProcessingPattern.LOGGER.info("Failed to read config: {}", e.getLocalizedMessage());
+            SchematicannonProcessingPattern.LOGGER.info("Failed to read config: {}", e.getLocalizedMessage());
         }
         return false;
     }
@@ -57,7 +57,7 @@ public final class Config {
             writer.setIndent("  ");
             CODEC.serialize(writer);
         } catch (Exception e) {
-            SchematicanonProcessingPattern.LOGGER.warn("Failed to write config: {}", e.getLocalizedMessage());
+            SchematicannonProcessingPattern.LOGGER.warn("Failed to write config: {}", e.getLocalizedMessage());
         }
     }
 }

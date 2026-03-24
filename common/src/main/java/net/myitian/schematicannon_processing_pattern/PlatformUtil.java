@@ -1,4 +1,4 @@
-package net.myitian.schematicanon_processing_pattern;
+package net.myitian.schematicannon_processing_pattern;
 
 import com.simibubi.create.content.schematics.cannon.SchematicannonInventory;
 import dev.architectury.injectables.annotations.ExpectPlatform;

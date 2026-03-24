@@ -1,4 +1,4 @@
-package net.myitian.schematicanon_processing_pattern;
+package net.myitian.schematicannon_processing_pattern;
 
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.stacks.AEItemKey;
@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.myitian.schematicanon_processing_pattern.config.Config;
+import net.myitian.schematicannon_processing_pattern.config.Config;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +27,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SchematicanonProcessingPattern {
-    public static final String MOD_ID = "schematicanon_processing_pattern";
+public final class SchematicannonProcessingPattern {
+    public static final String MOD_ID = "schematicannon_processing_pattern";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Path CONFIG_PATH = PlatformUtil.getConfigDirectory().resolve(MOD_ID + ".json");
     public static final int BOOK_INPUT = 2;
