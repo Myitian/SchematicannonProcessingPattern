@@ -1,9 +1,0 @@
-{
-  "schematicanon_processing_pattern.configuration.title": "SchematicanonProcessingPattern Configs",
-  "schematicanon_processing_pattern.configuration.section.schematicanon_processing_pattern.server.toml": "SchematicanonProcessingPattern Configs",
-  "schematicanon_processing_pattern.configuration.section.schematicanon_processing_pattern.server.toml.title": "SchematicanonProcessingPattern Configs",
-  "schematicanon_processing_pattern.configuration.addGathered": "Add Gathered",
-  "schematicanon_processing_pattern.configuration.showBlocksNotLoadedMessage": "Show Blocks Not Loaded Message",
-  "schematicanon_processing_pattern.configuration.showNbtFileName": "Show Nbt File ame",
-  "schematicanon_processing_pattern.configuration.outputItem": "Output Item"
-}

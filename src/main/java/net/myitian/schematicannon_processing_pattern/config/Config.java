@@ -1,4 +1,4 @@
-package net.myitian.schematicanon_processing_pattern.config;
+package net.myitian.schematicannon_processing_pattern.config;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
